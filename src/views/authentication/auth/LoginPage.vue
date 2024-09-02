@@ -1,7 +1,54 @@
-<script setup lang="ts">
+<script>
 import Logo from '@/layouts/dashboard/logo/LogoDark.vue';
-import AuthLogin from '../authForms/AuthLogin.vue';
-import AuthFooter from './AuthFooter.vue';
+import AuthLogin from '@/views/authentication/authForms/AuthLogin.vue';
+import AuthFooter from '@/views/authentication/auth/AuthFooter.vue';
+
+export default {
+  components: {
+    Logo,
+    AuthLogin,
+    AuthFooter
+  },
+  created() {
+    document.title = 'Bookings - Sign In';
+  },
+  methods: {
+    login() {
+      this.isSubmitting = true;
+      this.valid = true;
+
+      let data = {
+        email: this.email,
+        password: this.password
+      };
+
+      let auth = new AuthApi();
+      auth
+        .login(data)
+        .then((response) => {
+          if (response.data.success) {
+            localStorage.setItem('access_token', response.data.token.access_token);
+            this.$router.push('/dashboard');
+          }
+          this.isSubmitting = false;
+        })
+        .catch((error) => {
+          this.valid = false;
+          this.isSubmitting = false;
+          this.alertData = error.response.data.message;
+          this.alertType = 'error';
+          this.alert = true;
+
+          setTimeout(() => {
+            this.alert = false;
+          }, 5000);
+        });
+    },
+    forgotPassword() {
+      this.$router.push('/forgot-password');
+    }
+  }
+};
 </script>
 
 <template>

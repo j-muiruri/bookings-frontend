@@ -22,3 +22,13 @@
 @import './page/dashboards';
 
 @import 'vue3-perfect-scrollbar/style.css';
+
+
+.custom-alert {
+    position: fixed  !important;
+    left: 50%;
+    bottom: 10%;
+    transform: translate(-50%, -50%);
+    margin: 0 auto;
+    z-index: 1000001 !important;
+  }
